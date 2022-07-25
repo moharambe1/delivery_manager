@@ -11,14 +11,15 @@ class StorePageBloc extends Bloc<StorePageEvent, StorePageState> {
   StorePageBloc() : super(StorePageInitialState()) {
     on<GetPackagesEvent>((event, emit) async {
       emit(StorePageLoadingState());
-      final res = await getIt<DomainRepostory>().getPackages(event.state);
-      emit(PackagesStorePageState(packages: res));
-    });
+      final res =
+          await getIt<DomainRepostory>().getPackagesWithState(event.state);
+      emit(PackagesLoadedeState(packages: res));
+    }); /*
     on<PayPackagesForUserEvent>(((event, emit) async {
       emit(StorePageLoadingState());
       final res = await getIt<DomainRepostory>()
-          .payPackagesForUser(event.phone, event.ids);
+          .changePackagesByIds(event.phone, event.ids);
       emit(StorePagesSucceededState());
-    }));
+    }));*/
   }
 }

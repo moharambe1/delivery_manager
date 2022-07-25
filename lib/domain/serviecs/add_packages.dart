@@ -1,27 +1,35 @@
+import 'dart:developer';
+
 import 'package:delivery_manager/models/anoun_client_model.dart';
 import 'package:delivery_manager/models/package_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:injectable/injectable.dart';
+import 'package:tuple/tuple.dart';
 
 @injectable
 class SerAddPackage {
   Dio dio;
   SerAddPackage({required this.dio});
-  Future<bool> request(
+  Future<Tuple2<bool, int?>> request(
       AnounClientModel anounClientModel, PackageModel packageModel) async {
     try {
       print(anounClientModel.toJson());
       var response = await dio.post('/manager/api/addPackage',
           data: {"account": anounClientModel, "package": packageModel});
 
-      return true;
+      return Tuple2(true, response.data['id']);
     } catch (e) {
       if (e is DioError) {
-        print(e.response?.data ?? "");
+        EasyLoading.showError(e.response?.data.toString() ?? "حصل خطأ",
+            duration: const Duration(seconds: 2));
+        log(e.response?.data.toString() ?? e.toString());
       } else {
-        print(e);
+        EasyLoading.showError("حصل خطأ", duration: const Duration(seconds: 2));
+        log(e.toString());
       }
-      return false;
+
+      return const Tuple2(false, null);
     }
   }
 }

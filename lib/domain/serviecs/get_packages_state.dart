@@ -26,16 +26,22 @@ List<PackageModel> tPackages = const [
 ];
 
 @injectable
-class SerGetPackages {
-  //Dio dio;
-  SerGetPackages();
+class SerGetPackagesWithState {
+  Dio dio;
+  SerGetPackagesWithState({required this.dio});
   Future<List<PackageModel>> request(StatePackageEnum state) async {
     try {
-      //var response = await dio.get('/admin/getPackaes',queryParameters: );
-      final tmp =
-          await Future.delayed(const Duration(seconds: 10)).then((value) {
-        return tPackages;
-      });
+      var response = await dio.post('/manager/api/getPakagesWithState',
+          data: {'state': state.name});
+      final rows = response.data as List<dynamic>?;
+      final tmp = <PackageModel>[];
+      if (rows?.isNotEmpty ?? false) {
+        // ignore: avoid_function_literals_in_foreach_calls
+        rows?.forEach((element) {
+          tmp.add(PackageModel.fromMap(element));
+        });
+      }
+      print(tmp);
       return tmp;
     } catch (e) {
       print(e);

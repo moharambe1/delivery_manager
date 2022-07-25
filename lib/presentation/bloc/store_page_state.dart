@@ -15,9 +15,9 @@ class HomeStorePageState extends StorePageState {
   const HomeStorePageState();
 }
 
-class PackagesStorePageState extends HomeStorePageState {
+class PackagesLoadedeState extends HomeStorePageState {
   final List<PackageModel> packages;
-  const PackagesStorePageState({
+  const PackagesLoadedeState({
     required this.packages,
   });
 

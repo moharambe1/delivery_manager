@@ -24,10 +24,15 @@ class SerLoginAuth {
       return true;
     } catch (e) {
       if (e is DioError) {
-        if (e.response!.data) EasyLoading.showError(e.response!.data);
+        if (e.response?.data ?? false) {
+          EasyLoading.showError(e.response!.data);
+        } else {
+          print(e);
+        }
       } else {
         print(e);
       }
+
       return false;
     }
   }

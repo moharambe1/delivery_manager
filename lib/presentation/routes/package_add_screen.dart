@@ -25,22 +25,26 @@ enum FuildEnum<int> {
 }
 
 class _PackageAddPageState extends State<PackageAddPage> {
-  String bladia = CityEnum.values[0].toString();
+  String wilaya = WilayaEnum.BISKRA.name;
+  String bladia = CityEnum.values[0].name;
   int depri = 100;
-  bool dafaa = true;
-  bool dafaaTawsil = false;
+  bool dafaa = false;
+  bool dafaaTawsil = true;
   List<TextEditingController> controller = [
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
-    TextEditingController(text: "0"),
+    TextEditingController(),
     TextEditingController(text: "0")
   ];
 
   @override
   Widget build(BuildContext context) {
-    CityEnum tcity = CityEnum.BISKRA;
+    WilayaEnum twilaya =
+        WilayaEnum.values.firstWhere((element) => element.name == wilaya);
+    CityEnum tcity =
+        CityEnum.values.firstWhere((element) => element.name == bladia);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
@@ -48,21 +52,23 @@ class _PackageAddPageState extends State<PackageAddPage> {
           final tpack = PackageModel(
               id: 0,
               phoneNumber: controller[FuildEnum.phone.index].text,
+              fullName: controller[FuildEnum.senderName.index].text,
+              wilaya: twilaya,
               city: tcity,
               address: controller[FuildEnum.address.index].text,
-              moneyDelivring: int.parse(
-                controller[FuildEnum.deliveryPrice.index].text,
-              ),
+              moneyDelivring:
+                  int.parse(controller[FuildEnum.deliveryPrice.index].text),
               moneyPackage:
-                  int.parse(controller[FuildEnum.packagePrice.index].text),
-              stateMoney: StatsMoneyEnum.RECIVER,
+                  int.tryParse(controller[FuildEnum.packagePrice.index].text) ??
+                      0,
+              stateMoney: dafaa ? StatsMoneyEnum.RECIVER : StatsMoneyEnum.PAYED,
               stateMoneyDelivring: dafaaTawsil
                   ? StatsMoneyDeliveringEnum.RECIVER
                   : StatsMoneyDeliveringEnum.CLIENT,
               statePackage: StatePackageEnum.RECEIVING);
 
           final tacoount = AnounClientModel(
-              name: controller[FuildEnum.senderName.index].text,
+              name: "a", //controller[FuildEnum.senderName.index].text,
               phone: controller[FuildEnum.senderPhone.index].text);
           context.read<PackageBloc>().add(
               AddPackageEvent(anounClientModel: tacoount, packageModel: tpack));
@@ -78,6 +84,8 @@ class _PackageAddPageState extends State<PackageAddPage> {
             if (state is AddedPackageSucceedState) {
               EasyLoading.showSuccess("تم اضافة الطرد",
                   duration: const Duration(seconds: 2));
+              Navigator.popAndPushNamed(context, '/details',
+                  arguments: state.idPack);
             }
           },
           child: Column(children: [
@@ -163,7 +171,7 @@ class _PackageAddPageState extends State<PackageAddPage> {
                           enabled: true,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            label: Text("رقـم الهـاتـف المستقبل :",
+                            label: Text("رقـم الهـاتـف المستـلم :",
                                 style: Theme.of(context).textTheme.headline4),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8)),
@@ -172,11 +180,25 @@ class _PackageAddPageState extends State<PackageAddPage> {
                           )),
                       SizedBox(height: 2.h),
                       Row(children: [
+                        Text("الولايـة :    ",
+                            style: Theme.of(context).textTheme.headline4),
+                        DropdownButton<String>(
+                            value: wilaya,
+                            items: generateWilayaDropDownItems(context),
+                            onChanged: (item) {
+                              setState(() {
+                                bladia = item!;
+                                wilaya = item;
+                              });
+                            })
+                      ]),
+                      SizedBox(height: 2.h),
+                      Row(children: [
                         Text("البـلديـة :    ",
                             style: Theme.of(context).textTheme.headline4),
                         DropdownButton<String>(
                             value: bladia,
-                            items: generateDropDownItems(context),
+                            items: generateCityDropDownItems(context, wilaya),
                             onChanged: (item) {
                               setState(() {
                                 bladia = item!;
@@ -224,11 +246,12 @@ class _PackageAddPageState extends State<PackageAddPage> {
                       ]),
                       if (dafaa)
                         TextField(
-                            onEditingComplete: () => setState(() {}),
+                            onChanged: (_) => setState(() {}),
                             controller:
                                 controller[FuildEnum.packagePrice.index],
                             showCursor: true,
                             enabled: true,
+                            textDirection: TextDirection.ltr,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               label: Text("مبلـغ الطـرد:",
@@ -251,9 +274,10 @@ class _PackageAddPageState extends State<PackageAddPage> {
                       ]),
                       TextField(
                           controller: controller[FuildEnum.deliveryPrice.index],
-                          onEditingComplete: () => setState(() {}),
+                          onChanged: (_) => setState(() {}),
                           showCursor: true,
                           enabled: true,
+                          textDirection: TextDirection.ltr,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             label: Text("مبلـغ التـوصيـل:",
@@ -330,7 +354,7 @@ class _PackageAddPageState extends State<PackageAddPage> {
                             const TextSpan(text: "المجـموع : "),
                             TextSpan(
                                 text:
-                                    "${int.parse(controller[FuildEnum.deliveryPrice.index].text) + (dafaa ? int.parse(controller[FuildEnum.packagePrice.index].text) : 0)}DA",
+                                    "${((int.tryParse(controller[FuildEnum.deliveryPrice.index].text) ?? 0) + (dafaa ? int.tryParse(controller[FuildEnum.packagePrice.index].text) ?? 0 : 0))}DA",
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.primary))
@@ -343,19 +367,35 @@ class _PackageAddPageState extends State<PackageAddPage> {
   }
 }
 
-List<DropdownMenuItem<String>> generateDropDownItems(BuildContext context) {
-  final bladiaList = [
-    [CityEnum.values[0].toString(), "بســكـرة"],
-    [CityEnum.values[1].toString(), "سيــدي عقــبة"],
-  ];
+List<DropdownMenuItem<String>> generateCityDropDownItems(
+    BuildContext context, String pwilaya) {
+  List<List<Object>> tmpBladia = [];
+  final wilaya =
+      WilayaEnum.values.firstWhere((element) => element.name == pwilaya);
+  if (wilaya == WilayaEnum.BISKRA) tmpBladia = bladiaList;
+  if (wilaya == WilayaEnum.BATNA) tmpBladia = bladiaBatnaList;
+  if (wilaya == WilayaEnum.OuledDjellal) tmpBladia = bladiaOuladJilal;
 
   return List.generate(
-      bladiaList.length,
+      tmpBladia.length,
       (index) => DropdownMenuItem(
-          value: bladiaList[index][0],
+          value: (tmpBladia[index][0] as CityEnum).name,
           child: SizedBox(
             width: 50.w,
-            child: Text(bladiaList[index][1],
+            child: Text(tmpBladia[index][1] as String,
                 style: Theme.of(context).textTheme.headline2),
           )));
+}
+
+List<DropdownMenuItem<String>> generateWilayaDropDownItems(
+    BuildContext context) {
+  return List.generate(wilayaList.length, (index) {
+    return DropdownMenuItem(
+        value: (wilayaList[index][0] as WilayaEnum).name,
+        child: SizedBox(
+          width: 50.w,
+          child: Text(wilayaList[index][1] as String,
+              style: Theme.of(context).textTheme.headline2),
+        ));
+  });
 }

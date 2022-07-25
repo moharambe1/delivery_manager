@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
-import 'package:delivery_manager/presentation/routes/home_screen.dart';
 import 'package:delivery_manager/presentation/widget/w_package_card.dart';
 
 enum IconPath { package, delivering, success, faild }
@@ -19,19 +18,20 @@ class BtnTextData {
 }
 
 Widget wStorePage(BuildContext context) {
-  final topBtn = [
+  const topBtn =
+      mapStateArb; /*[
     BtnTextData(
         text: "الكـل",
         onPressed: () {
           context
               .read<StorePageBloc>()
-              .add(const GetPackagesEvent(state: StatePackageEnum.DELEVERED));
+              .add(const GetPackagesEvent(state: StatePackageEnum.RECEIVING));
         }),
     BtnTextData(text: "الموستدع", onPressed: () {}),
     BtnTextData(text: "جاري التوصيل", onPressed: () {}),
     BtnTextData(text: "تم التوصيل", onPressed: () {}),
     BtnTextData(text: "فشل التوصيل", onPressed: () {}),
-  ];
+  ];*/
   return Column(
     children: [
       Container(
@@ -52,14 +52,14 @@ Widget wStorePage(BuildContext context) {
       ),
       BlocBuilder<StorePageBloc, StorePageState>(
         builder: (context, state) {
-          if (state is PackagesStorePageState) {
+          if (state is PackagesLoadedeState) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: List.generate(15, (index) {
+              children: List.generate(state.packages.length, (index) {
                 return Padding(
                     padding: EdgeInsets.only(bottom: 2.h),
                     child:
-                        packageCard(context, tPackages[index % 2], 70, 90.w));
+                        packageCard(context, state.packages[index], 70, 90.w));
               }),
             );
           } else {
@@ -71,11 +71,13 @@ Widget wStorePage(BuildContext context) {
   );
 }
 
-Widget btnText(BuildContext context, BtnTextData data) {
+Widget btnText(BuildContext context, List<dynamic> data) {
   return ElevatedButton(
-      onPressed: data.onPressed,
+      onPressed: () {
+        context.read<StorePageBloc>().add(GetPackagesEvent(state: data[0]));
+      },
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Text(data.text, style: Theme.of(context).textTheme.bodyText1),
+        child: Text(data[1], style: Theme.of(context).textTheme.bodyText1),
       ));
 }

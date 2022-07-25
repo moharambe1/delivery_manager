@@ -18,4 +18,12 @@ class InProgressState extends PackageState {
   List<Object> get props => [massage];
 }
 
-class AddedPackageSucceedState extends PackageState {}
+class AddedPackageSucceedState extends PackageState {
+  final idPack;
+  const AddedPackageSucceedState({required this.idPack});
+
+  @override
+  List<Object> get props => [idPack];
+}
+
+class AddPackageErrorState extends PackageState {}

@@ -27,7 +27,7 @@ void main() async {
   final cookieJar =
       PersistCookieJar(storage: FileStorage('${pathStore.path}/.cookies/'));
   final option =
-      BaseOptions(baseUrl: 'http://10.0.2.2:8080', connectTimeout: 3000);
+      BaseOptions(baseUrl: 'http://144.24.193.202:8080', connectTimeout: 3000);
 
   final Dio dio = Dio(option)..interceptors.add(CookieManager(cookieJar));
   getIt.registerFactory<Dio>(() => dio);
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
               title: 'Flutter Demo',
               theme: context.watch<ThemesProvider>().themeData,
-              initialRoute: '/addPackage',
+              initialRoute: '/home',
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouteGenerator.generateRoute,
               builder: EasyLoading.init()),

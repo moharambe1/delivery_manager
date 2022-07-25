@@ -12,10 +12,13 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
   PackageBloc() : super(PackageInitial()) {
     on<AddPackageEvent>((event, emit) async {
       emit(const InProgressState(massage: "جاري اضافـة طرد"));
-      await getIt<DomainRepostory>()
+      final res = await getIt<DomainRepostory>()
           .addPackage(event.anounClientModel, event.packageModel);
-
-      emit(AddedPackageSucceedState());
+      if (res.item1) {
+        emit(AddedPackageSucceedState(idPack: res.item2));
+      } else {
+        emit(AddPackageErrorState());
+      }
     });
   }
 }

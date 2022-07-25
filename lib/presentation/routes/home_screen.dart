@@ -47,15 +47,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => {Navigator.pushNamed(context, "/addPackage")},
-            child: Container(
-                padding: EdgeInsets.all(1.w),
-                alignment: Alignment.center,
-                child: Container(
-                    padding: const EdgeInsets.all(1),
-                    child: Image.asset("assets/icons/icon_deliver_add.png")))),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Container(
+          child: Stack(
+            children: [
+              Positioned(
+                left: 5,
+                bottom: 60,
+                child: FloatingActionButton(
+                    heroTag: "btn1",
+                    onPressed: () => {Navigator.pushNamed(context, "/scaning")},
+                    child: Container(
+                        padding: const EdgeInsets.all(4),
+                        alignment: Alignment.center,
+                        child: Container(
+                            padding: const EdgeInsets.all(1),
+                            child: Icon(
+                              Icons.qr_code_scanner,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 40,
+                            )))),
+              ),
+              Positioned(
+                left: 5,
+                bottom: 0,
+                child: FloatingActionButton(
+                    heroTag: "btn2",
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, "/addPackage")},
+                    child: Container(
+                        padding: const EdgeInsets.all(4),
+                        alignment: Alignment.center,
+                        child: Container(
+                            padding: const EdgeInsets.all(1),
+                            child: Image.asset(
+                              "assets/icons/icon_deliver_add.png",
+                            )))),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         bottomNavigationBar: const WButtomNavBar(),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -68,7 +99,11 @@ class _HomePageState extends State<HomePage> {
                     return wStorePage(context);
                   }
                   if (state == HomeNavBarEnum.paying) {
-                    return wPayPage(context);
+                    return wPayPage(context, StatePackageEnum.PAYED, 'الـدفـع');
+                  }
+                  if (state == HomeNavBarEnum.returning) {
+                    return wPayPage(
+                        context, StatePackageEnum.RETURN, 'الارجاع');
                   }
                   if (state == HomeNavBarEnum.delevring) {
                     return wDeliverPage(context);
