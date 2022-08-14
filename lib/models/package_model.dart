@@ -39,7 +39,7 @@ enum WilayaEnum { BISKRA, BATNA, OuledDjellal, AUTHER }
 final wilayaList = [
   [WilayaEnum.BISKRA, "بســكـرة"],
   [WilayaEnum.BATNA, "بـاتـنة"],
-  [WilayaEnum.OuledDjellal, "واد جـلال"],
+  [WilayaEnum.OuledDjellal, "ولاد جـلال"],
 ];
 
 enum CityEnum {

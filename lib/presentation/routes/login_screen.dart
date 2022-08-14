@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:delivery_manager/presentation/bloc/auth_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -22,7 +23,9 @@ class _LoginPageState extends State<LoginPage> {
         body: BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthInitialState) {
-          print("init");
+          if (kDebugMode) {
+            print("init");
+          }
           EasyLoading.show();
           context.read<AuthBloc>().add(IsAuth());
         }

@@ -19,7 +19,7 @@ class InProgressState extends PackageState {
 }
 
 class AddedPackageSucceedState extends PackageState {
-  final idPack;
+  final int idPack;
   const AddedPackageSucceedState({required this.idPack});
 
   @override

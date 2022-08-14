@@ -15,7 +15,7 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
       final res = await getIt<DomainRepostory>()
           .addPackage(event.anounClientModel, event.packageModel);
       if (res.item1) {
-        emit(AddedPackageSucceedState(idPack: res.item2));
+        emit(AddedPackageSucceedState(idPack: res.item2!));
       } else {
         emit(AddPackageErrorState());
       }

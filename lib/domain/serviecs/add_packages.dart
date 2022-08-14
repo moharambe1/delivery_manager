@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:delivery_manager/models/anoun_client_model.dart';
 import 'package:delivery_manager/models/package_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tuple/tuple.dart';
@@ -14,7 +15,9 @@ class SerAddPackage {
   Future<Tuple2<bool, int?>> request(
       AnounClientModel anounClientModel, PackageModel packageModel) async {
     try {
-      print(anounClientModel.toJson());
+      if (kDebugMode) {
+        print(anounClientModel.toJson());
+      }
       var response = await dio.post('/manager/api/addPackage',
           data: {"account": anounClientModel, "package": packageModel});
 

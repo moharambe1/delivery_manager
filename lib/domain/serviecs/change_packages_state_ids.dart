@@ -10,7 +10,7 @@ class SerSetPackagesStateByID {
   const SerSetPackagesStateByID({required this.dio});
   Future<bool> request(StatePackageEnum newState, List<int> ids) async {
     try {
-      var response = await dio.post('/manager/api/setPackageStateByIds', data: {
+      await dio.post('/manager/api/setPackageStateByIds', data: {
         "packages": {"ids": ids, "newState": newState.name}
       });
       print(ids);

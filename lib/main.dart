@@ -1,4 +1,11 @@
-import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:provider/provider.dart';
 
 import 'package:delivery_manager/inject.dart';
 import 'package:delivery_manager/presentation/bloc/auth_bloc.dart';
@@ -7,25 +14,15 @@ import 'package:delivery_manager/presentation/bloc/store_page_bloc.dart';
 import 'package:delivery_manager/presentation/cubit/home_navbar_cubit.dart';
 import 'package:delivery_manager/presentation/cubit/paying_mony_cubit.dart';
 import 'package:delivery_manager/presentation/provider/themes_provider.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
 import 'package:delivery_manager/presentation/routes/route_generator.dart';
-import 'package:flutter_sizer/flutter_sizer.dart';
-
-import 'package:path_provider/path_provider.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureDependencies();
-  Directory pathStore = await getApplicationDocumentsDirectory();
+  await Future.delayed(const Duration(milliseconds: 300));
 
-  final cookieJar =
-      PersistCookieJar(storage: FileStorage('${pathStore.path}/.cookies/'));
+  configureDependencies();
+  //Directory pathStore = await getApplicationDocumentsDirectory();
+  final cookieJar = CookieJar();
   final option =
       BaseOptions(baseUrl: 'http://144.24.193.202:8080', connectTimeout: 3000);
 
@@ -57,7 +54,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
               title: 'Flutter Demo',
               theme: context.watch<ThemesProvider>().themeData,
-              initialRoute: '/home',
+              initialRoute: '/',
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouteGenerator.generateRoute,
               builder: EasyLoading.init()),

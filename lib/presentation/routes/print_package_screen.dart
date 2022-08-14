@@ -30,16 +30,37 @@ class PringPackagePage extends StatelessWidget {
     return pw.RichText(
         textDirection: pw.TextDirection.rtl,
         text: pw.TextSpan(children: [
-          pw.TextSpan(text: title),
           pw.TextSpan(
-              text: text, style: const pw.TextStyle(color: cPrimaryColor))
+              text: title, style: const pw.TextStyle(color: cPrimaryColor)),
+          pw.TextSpan(text: text)
         ]));
+  }
+
+  pw.Widget _printIconText(pw.Widget icon, String text) {
+    return pw.Row(
+        // mainAxisAlignment: MainAxisAlignment.,
+
+        children: [
+          icon,
+          pw.RichText(
+              textDirection: pw.TextDirection.rtl,
+              text: pw.TextSpan(children: [
+                const pw.TextSpan(style: pw.TextStyle(color: cPrimaryColor)),
+                pw.TextSpan(text: text)
+              ]))
+        ]);
   }
 
   Future<bool> _generatePdf(PdfPageFormat format, String title) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final img =
         (await rootBundle.load('assets/image/logo.png')).buffer.asUint8List();
+    final isg = (await rootBundle.load('assets/icons/instagram.png'))
+        .buffer
+        .asUint8List();
+    final fcb = (await rootBundle.load('assets/icons/facebook.png'))
+        .buffer
+        .asUint8List();
     //final font =
     //    pw.Font.ttf(await rootBundle.load("assets/fonts/caire/Cairo.ttf"));
     final font = await PdfGoogleFonts.iBMPlexSansArabicMedium();
@@ -68,7 +89,7 @@ class PringPackagePage extends StatelessWidget {
                           _printText(
                               "اسم المرسل: ", data.fullName ?? "............"),
                           pw.SizedBox(height: 10),
-                          _printText("رقـم هـاتـف المرسل: ", senderPhone),
+                          _printText("رقـم المرسل: ", senderPhone),
                           pw.SizedBox(height: 10),
                           _printText(
                               "مبـلغ الطردع: ", data.moneyPackage.toString()),
@@ -78,10 +99,9 @@ class PringPackagePage extends StatelessWidget {
                           pw.SizedBox(height: 13),
                           pw.SizedBox(width: 170, child: pw.Divider()),
                           pw.SizedBox(height: 10),
-                          _printText("اسم المستـلم: ",
-                              data.fullName ?? "............"),
+                          _printText("اسم المستـلم: ", "............"),
                           pw.SizedBox(height: 10),
-                          _printText("رقـم الهـاتـف: ", data.phoneNumber),
+                          _printText("رقـم المستـلم: ", data.phoneNumber),
                           pw.SizedBox(height: 10),
                           _printText("الولايـة: ", data.getWilayaText()),
                           pw.SizedBox(height: 10),
@@ -100,10 +120,9 @@ class PringPackagePage extends StatelessWidget {
                         child: pw.Column(
                             mainAxisAlignment: pw.MainAxisAlignment.center,
                             children: [
-                              _printText("رقـم هاتـف الشـركة: ", "0770223465"),
+                              _printText("الشـركة: ", "MD express"),
                               pw.SizedBox(height: 5),
-                              _printText(
-                                  "مواقـع التـواصل الاجتـماعي: ", "MD express"),
+                              _printText("هاتـف الشـركة: ", "0770223465"),
                               pw.SizedBox(height: 10),
                               pw.BarcodeWidget(
                                   drawText: true,
@@ -116,7 +135,26 @@ class PringPackagePage extends StatelessWidget {
                                   height: 160,
                                   padding: const pw.EdgeInsets.all(6)),
                               pw.SizedBox(height: 4),
-                              pw.RichText(
+                              _printText("رقـم الطرد: ", data.id.toString()),
+                              _printIconText(
+                                  pw.Image(pw.MemoryImage(fcb),
+                                      fit: pw.BoxFit.fill,
+                                      width: 18,
+                                      height: 18),
+                                  "محمدي لتوصيل  "),
+                              pw.SizedBox(height: 4),
+                              _printIconText(
+                                  pw.Image(pw.MemoryImage(isg),
+                                      fit: pw.BoxFit.fill,
+                                      width: 18,
+                                      height: 18),
+                                  "  mohamdi_delivery"),
+                              /* _printIconText(
+                                  pw.SvgImage(
+                                      svg: isg, width: 34, fit: pw.BoxFit.fill),
+                                  "محمدي لتوصيل"),*/
+
+                              /*pw.RichText(
                                   textDirection: pw.TextDirection.ltr,
                                   text: pw.TextSpan(children: [
                                     const pw.TextSpan(text: "id: "),
@@ -124,7 +162,7 @@ class PringPackagePage extends StatelessWidget {
                                         text: data.id.toString(),
                                         style: const pw.TextStyle(
                                             color: cPrimaryColor))
-                                  ]))
+                                  ]))*/
                             ])),
                   ],
                 ))

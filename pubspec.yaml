@@ -27,6 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter:
+    sdk: flutter
   barcode_widget: ^2.0.2
 
   bloc: ^8.0.3
@@ -35,9 +37,10 @@ dependencies:
   dio: ^4.0.6
   dio_cookie_manager: ^2.0.0
   equatable: ^2.0.3
-  flutter:
-    sdk: flutter
+
   #flutter_barcode_scanner: ^2.0.0
+  cookie_jar: 3.0.1
+
   flutter_bloc: ^8.0.1
   flutter_easyloading: ^3.0.5
   flutter_screenutil: ^5.5.3+1

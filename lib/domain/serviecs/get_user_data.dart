@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tuple/tuple.dart';
@@ -18,9 +19,13 @@ class SerGetUserData {
       if (e is DioError) {
         EasyLoading.showError(e.response?.data ?? "حصل خـظأ",
             duration: const Duration(seconds: 2));
-        print(e.response?.data ?? e);
+        if (kDebugMode) {
+          print(e.response?.data ?? e);
+        }
       } else {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
       return null;
     }
@@ -36,9 +41,13 @@ class SerGetUserData {
       if (e is DioError) {
         EasyLoading.showError(e.response?.data ?? "حصل خـظأ",
             duration: const Duration(seconds: 2));
-        print(e.response?.data ?? e);
+        if (kDebugMode) {
+          print(e.response?.data ?? e);
+        }
       } else {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
       return null;
     }

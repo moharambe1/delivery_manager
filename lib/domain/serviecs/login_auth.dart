@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:injectable/injectable.dart';
 
@@ -19,7 +20,9 @@ class SerLoginAuth {
           "accountRole": "MANAGER"
         }
       });
-      print(res);
+      if (kDebugMode) {
+        print(res);
+      }
 
       return true;
     } catch (e) {
@@ -27,10 +30,14 @@ class SerLoginAuth {
         if (e.response?.data ?? false) {
           EasyLoading.showError(e.response!.data);
         } else {
-          print(e);
+          if (kDebugMode) {
+            print(e);
+          }
         }
       } else {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
 
       return false;
