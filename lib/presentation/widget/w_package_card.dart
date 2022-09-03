@@ -51,7 +51,7 @@ Widget packageCard(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(data.phoneNumber),
-                  Text(data.address ?? data.cityArb)
+                  Text("${data.cityArb} - ${data.address ?? ""}")
                 ])
           ]),
           Text((data.moneyPackage +

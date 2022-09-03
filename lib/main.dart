@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
               title: 'Flutter Demo',
               theme: context.watch<ThemesProvider>().themeData,
-              initialRoute: '/',
+              initialRoute: '/login',
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouteGenerator.generateRoute,
               builder: EasyLoading.init()),

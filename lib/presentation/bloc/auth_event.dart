@@ -16,4 +16,6 @@ class LoginEvent extends AuthEvent {
   List<Object> get props => [email, pwd];
 }
 
-class IsAuth extends AuthEvent {}
+class IsAuthEvent extends AuthEvent {}
+
+class TryLoginEvent extends AuthEvent {}

@@ -235,15 +235,16 @@ class PackageModel extends Equatable {
           StatsMoneyDeliveringEnum.values.byName(map['statemoneydelivering']),
       city: CityEnum.values.byName(map['city']),
       wilaya: WilayaEnum.values.byName(map['wilaya']),
-      address: map['address'],
+      address: map['addrass'], //TODO : fix missing spelling Address
     );
   }
 
   factory PackageModel.fromJson(String source) =>
       PackageModel.fromMap(json.decode(source));
 
-  get cityArb {
-    return bladiaList.firstWhere((element) => element[0] == city)[1];
+  String get cityArb {
+    //return bladiaList.firstWhere((element) => element[0] == city)[1];
+    return _mapCityNameToArbText(wilaya, city)[1] as String;
   }
 
   int get packageMonyDontPayed {

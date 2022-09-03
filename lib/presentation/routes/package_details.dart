@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:tuple/tuple.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PackageDetailsPage extends StatefulWidget {
   const PackageDetailsPage({super.key, required this.id});
@@ -128,6 +129,12 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
     }
   }
 
+  Widget _callPhone(Widget widget, String phone) {
+    return GestureDetector(
+        child: widget,
+        onTap: () async => {await launchUrlString("tel://$phone")});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +197,9 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                                         .secondary)),
                           ),
                           SizedBox(height: 2.h),
-                          _printText("رقـم هـاتـف المرسل: ", state.phone),
+                          _callPhone(
+                              _printText("رقـم هـاتـف المرسل: ", state.phone),
+                              state.phone),
                           SizedBox(height: 2.h),
                           _printText("اسم المرسل: ", data.fullName ?? "مجـهول"),
                           Center(
@@ -204,7 +213,9 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                                         .secondary)),
                           ),
                           SizedBox(height: 2.h),
-                          _printText("رقـم الهـاتـف: ", data.phoneNumber),
+                          _callPhone(
+                              _printText("رقـم الهـاتـف: ", data.phoneNumber),
+                              data.phoneNumber),
                           SizedBox(height: 1.h),
                           _printText("الولايـة: ", data.getWilayaText()),
                           SizedBox(height: 1.h),
@@ -405,7 +416,7 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                           Center(
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
+                                    backgroundColor: Colors.red,
                                     padding: EdgeInsets.only(
                                         left: (50.w - 78), right: 50.w - 78)),
                                 child: Text(

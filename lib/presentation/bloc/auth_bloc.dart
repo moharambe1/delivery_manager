@@ -24,9 +24,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(LoginFailedState());
       }
     });
-    on<IsAuth>((event, emit) async {
+    on<IsAuthEvent>((event, emit) async {
       emit(AuthinProgressState());
       await Future.delayed(const Duration(seconds: 10));
+      emit(AuthSiccafluid());
+    });
+    on<TryLoginEvent>((event, emit) {
       emit(AuthSiccafluid());
     });
   }

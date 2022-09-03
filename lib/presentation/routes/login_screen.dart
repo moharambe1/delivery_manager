@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
             print("init");
           }
           EasyLoading.show();
-          context.read<AuthBloc>().add(IsAuth());
+          context.read<AuthBloc>().add(IsAuthEvent());
         }
         if (state is AuthSiccafluid) {
           EasyLoading.showSuccess("تم تسجيل الدخول",

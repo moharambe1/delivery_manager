@@ -94,8 +94,10 @@ class PringPackagePage extends StatelessWidget {
                           _printText(
                               "مبـلغ الطردع: ", data.moneyPackage.toString()),
                           pw.SizedBox(height: 10),
-                          _printText("رسوم التوصيل : ",
-                              data.moneyDelivring.toString()),
+                          _printText(
+                              "المبـلغ الكلي: ",
+                              (data.moneyDelivring + data.moneyPackage)
+                                  .toString()),
                           pw.SizedBox(height: 13),
                           pw.SizedBox(width: 170, child: pw.Divider()),
                           pw.SizedBox(height: 10),

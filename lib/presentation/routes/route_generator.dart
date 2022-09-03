@@ -3,6 +3,7 @@ import 'package:delivery_manager/models/package_select_model.dart';
 import 'package:delivery_manager/presentation/cubit/paying_mony_cubit.dart';
 import 'package:delivery_manager/presentation/routes/delivering_screen.dart';
 import 'package:delivery_manager/presentation/routes/home_screen.dart';
+import 'package:delivery_manager/presentation/routes/leading_screen.dart';
 import 'package:delivery_manager/presentation/routes/package_add_screen.dart';
 import 'package:delivery_manager/presentation/routes/package_details.dart';
 import 'package:delivery_manager/presentation/routes/paying_screen.dart';
@@ -41,10 +42,21 @@ class RouteGenerator {
       }
     },
   };
-
+  // static bool? isloogin;
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    /* if (isloogin != null && isloogin == false) {
+
+      isloogin = true;
+    }*/
+
     // final args = settings.arguments;
     switch (settings.name) {
+      case '/leading':
+        {
+          return MaterialPageRoute(
+              builder: (_) => const Directionality(
+                  textDirection: TextDirection.rtl, child: LeadingPage()));
+        }
       case '/':
         {
           return MaterialPageRoute(
